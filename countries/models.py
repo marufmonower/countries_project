@@ -13,6 +13,7 @@ class Country (models.Model):
     independent = models.BooleanField(null=True)
     cca2 = models.CharField(max_length=5, null=True, blank=True)
     cca3 = models.CharField(max_length=5, null=True, blank=True)
+    ccn3 = models.CharField(max_length=5, null=True, blank=True)
     currencies = models.JSONField(null=True, blank=True)
     languages = models.JSONField(null=True, blank=True)
 
