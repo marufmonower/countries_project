@@ -1,7 +1,7 @@
 Installation Steps
 1. Clone the Repository
 Start by cloning the project to your local machine:
-git clone https://github.com/yourusername/country-project.git
+git clone https://github.com/marufmonower/countries-project.git
 cd country-project
 2. Create a Virtual Environment
 It is recommended to use a virtual environment to manage your dependencies:
