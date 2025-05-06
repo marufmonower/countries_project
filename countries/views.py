@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Country
 from .serializers import CountrySerializer
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import login_required
+import json
 
 
 class CountryViewSet(viewsets.ModelViewSet):
@@ -12,6 +15,7 @@ class CountryViewSet(viewsets.ModelViewSet):
     serializer_class = CountrySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
+    permission_classes = [IsAuthenticated]
 
     @action(detail=True, methods=['get'])
     def same_region(self, request, pk=None):
@@ -28,6 +32,7 @@ class CountryViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+@login_required
 def country_list(request):
     search_query = request.GET.get('search', '')
     countries = Country.objects.all()
@@ -43,7 +48,15 @@ def country_details(request, pk):
     country = get_object_or_404(Country, pk=pk)
     same_region = Country.objects.filter(
         region=country.region).exclude(pk=country.pk)
-    languages = country.languages.split(',')#.all()
+    try:
+        languages = json.loads(country.languages)
+        if isinstance(languages, dict):
+            languages = languages.values()
+        else:
+            languages = languages.split(',')
+    except Exception:
+        languages = [country.languages]
+    # languages = country.languages.values()#split(',')#.all()
     return render(request, 'countries/country_details.html', {
         'country': country,
         'same_region': same_region,

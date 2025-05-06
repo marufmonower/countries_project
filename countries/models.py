@@ -17,5 +17,6 @@ class Country (models.Model):
     currencies = models.JSONField(null=True, blank=True)
     languages = models.JSONField(null=True, blank=True)
 
+
     def __str__(self):
         return self.name
